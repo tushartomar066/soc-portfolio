@@ -21,10 +21,11 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(personal.url),
   title: {
-    default: `${personal.name} — ${personal.role}`,
+    default: "Tushar Singh Tomar | SOC Analyst",
     template: `%s | ${personal.name}`,
   },
-  description: personal.description,
+  description:
+    "SOC Analyst specializing in threat detection, incident response, cloud security, and blue team operations.",
   keywords: [
     "SOC Analyst",
     "Cybersecurity",
@@ -45,14 +46,16 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: personal.url,
-    title: `${personal.name} — ${personal.role}`,
-    description: personal.description,
+    title: "Tushar Singh Tomar | SOC Analyst",
+    description:
+      "SOC Analyst specializing in threat detection, incident response, cloud security, and blue team operations.",
     siteName: personal.name,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${personal.name} — ${personal.role}`,
-    description: personal.description,
+    title: "Tushar Singh Tomar | SOC Analyst",
+    description:
+      "SOC Analyst specializing in threat detection, incident response, cloud security, and blue team operations.",
   },
   robots: {
     index: true,

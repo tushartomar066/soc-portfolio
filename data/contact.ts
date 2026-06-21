@@ -19,14 +19,22 @@ export interface SocialLink {
 }
 
 export const socialLinks: SocialLink[] = [
-  // TODO: Add your LinkedIn URL
-  { label: "LinkedIn", href: "#", icon: "linkedin" },
-  // TODO: Add your GitHub URL
-  { label: "GitHub", href: "#", icon: "github" },
-  // TODO: Add your TryHackMe URL
-  { label: "TryHackMe", href: "#", icon: "tryhackme" },
-  // TODO: Add your HackTheBox URL
-  { label: "Hack The Box", href: "#", icon: "hackthebox" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/tushar-singh-tomar-549055265/",
+    icon: "linkedin",
+  },
+  { label: "GitHub", href: "https://github.com/tushartomar066", icon: "github" },
+  {
+    label: "TryHackMe",
+    href: "https://tryhackme.com/p/AnonSeeker?vccr=1",
+    icon: "tryhackme",
+  },
+  {
+    label: "Hack The Box",
+    href: "https://profile.hackthebox.com/",
+    icon: "hackthebox",
+  },
 ];
 
 /** Section anchors used by the navbar smooth-scroll + active highlighting. */
@@ -37,6 +45,5 @@ export const navLinks = [
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Blog", href: "#blog" },
-  { label: "GitHub", href: "#github" },
   { label: "Contact", href: "#contact" },
 ] as const;

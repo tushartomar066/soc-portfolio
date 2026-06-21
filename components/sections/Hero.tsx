@@ -88,7 +88,7 @@ export function Hero() {
           </a>
           <a
             href={personal.cvPath}
-            download
+            download="Tushar-Singh-Tomar-Resume.pdf"
             className="btn-neon border-neon-blue text-neon-blue hover:bg-neon-blue/10 hover:shadow-neon-blue"
           >
             Download CV

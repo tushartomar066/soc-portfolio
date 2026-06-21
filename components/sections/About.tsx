@@ -21,13 +21,15 @@ export function About() {
           transition={{ duration: 0.6 }}
           className="relative mx-auto"
         >
-          <div className="relative h-72 w-72 overflow-hidden rounded-2xl border border-border shadow-card-glow">
+          {/* neon ring + glow around the photo */}
+          <div className="relative h-72 w-72 overflow-hidden rounded-2xl border-2 border-neon-green/60 shadow-neon-green ring-2 ring-neon-green/20 ring-offset-4 ring-offset-base">
             <Image
               src={personal.profileImage}
               alt="Tushar Singh Tomar"
-              fill
+              width={288}
+              height={288}
               sizes="288px"
-              className="object-cover"
+              className="h-full w-full object-cover"
               priority
             />
           </div>

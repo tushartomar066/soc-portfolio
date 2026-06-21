@@ -2,8 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import emailjs from "@emailjs/browser";
 import toast from "react-hot-toast";
+// TODO: Add EmailJS keys to enable real email sending
+// import emailjs from "@emailjs/browser";
 import { Send, Loader2 } from "lucide-react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { SocialRow } from "@/components/SocialRow";
@@ -40,41 +41,32 @@ export function Contact() {
     setErrors(validation);
     if (Object.keys(validation).length > 0) return;
 
-    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
-
-    if (!serviceId || !templateId || !publicKey) {
-      toast.error("Email service isn't configured yet.");
-      return;
-    }
-
     setSending(true);
-    try {
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: form.name,
-          reply_to: form.email,
-          message: form.message,
-        },
-        { publicKey }
-      );
-      toast.success("Message sent — I'll be in touch soon!");
-      setForm(EMPTY);
-    } catch (err) {
-      console.error(err);
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setSending(false);
-    }
+
+    // TODO: Add EmailJS keys to enable real email sending.
+    // Real sending is currently disabled — we just validate, show a success
+    // toast, and reset the form. To enable, restore the emailjs.send() call:
+    //
+    //   await emailjs.send(serviceId, templateId, {
+    //     from_name: form.name,
+    //     reply_to: form.email,
+    //     message: form.message,
+    //   }, { publicKey });
+    //
+    // with the keys from .env.local (NEXT_PUBLIC_EMAILJS_*).
+
+    // Simulate a brief send so the loading state is visible.
+    await new Promise((resolve) => setTimeout(resolve, 600));
+
+    toast.success("Message received! I'll get back to you soon.");
+    setForm(EMPTY);
+    setSending(false);
   }
 
   return (
     <section id="contact" className="mx-auto max-w-3xl px-6 py-24">
       <SectionHeading
-        index="08."
+        index="07."
         title="Get In Touch"
         subtitle="Have a role, a project, or a threat to discuss? Drop me a line."
       />

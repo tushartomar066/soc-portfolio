@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, ExternalLink, FolderGit2 } from "lucide-react";
+import { FolderGit2 } from "lucide-react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { projects } from "@/data/projects";
 
@@ -25,30 +25,8 @@ export function Projects() {
             whileHover={{ y: -6 }}
             className="group flex flex-col rounded-xl border border-border bg-card/60 p-6 backdrop-blur-sm transition-all duration-300 hover:border-neon-green hover:shadow-card-glow"
           >
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4">
               <FolderGit2 className="h-8 w-8 text-neon-green" />
-              <div className="flex items-center gap-3">
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${project.title} GitHub repository`}
-                  className="text-slate-400 transition-colors hover:text-neon-green"
-                >
-                  <Github className="h-5 w-5" />
-                </a>
-                {project.demoUrl && (
-                  <a
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${project.title} live demo`}
-                    className="text-slate-400 transition-colors hover:text-neon-blue"
-                  >
-                    <ExternalLink className="h-5 w-5" />
-                  </a>
-                )}
-              </div>
             </div>
 
             <h3 className="text-lg font-semibold text-slate-100 transition-colors group-hover:text-neon-green">

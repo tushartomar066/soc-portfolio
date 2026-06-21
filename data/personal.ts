@@ -32,7 +32,7 @@ export const personal = {
   // path inside /public to your CV/resume PDF
   cvPath: "/cv/Tushar-Singh-Tomar-Resume.pdf",
   // path inside /public to your profile photo
-  profileImage: "/images/profile-placeholder.svg",
+  profileImage: "/images/profile.jpg",
 } as const;
 
 export const about = {
