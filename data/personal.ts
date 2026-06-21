@@ -28,7 +28,7 @@ export const personal = {
   email: "tushartomar066@gmail.com",
   phone: "+91 6397206501",
   // absolute URL of the deployed site (update before deploy — used for SEO/OG)
-  url: "https://your-domain.vercel.app",
+  url: "https://myportfolio-wheat-xi.vercel.app",
   // path inside /public to your CV/resume PDF
   cvPath: "/cv/Tushar-Singh-Tomar-Resume.pdf",
   // path inside /public to your profile photo
