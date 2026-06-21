@@ -1,0 +1,56 @@
+---
+title: "Building a Phishing Triage Playbook in XSOAR"
+date: "2025-01-28"
+excerpt: "Automating the boring parts of phishing response — header parsing, URL detonation, and IOC enrichment — to cut MTTR from 45 minutes to 8."
+tags: ["Incident Response", "SOAR", "Automation"]
+author: "Tushar Singh Tomar"
+---
+
+Phishing is the highest-volume alert type in most SOCs, and most of the triage
+work is mechanical. Here's how I automated it.
+
+## The manual workflow (before)
+
+A reported phish used to take ~45 minutes:
+
+1. Extract headers and check SPF/DKIM/DMARC
+2. Pull out URLs and attachments
+3. Detonate each URL in a sandbox
+4. Enrich IOCs against VirusTotal and the internal blocklist
+5. Decide: benign, spam, or malicious
+6. If malicious — purge from all mailboxes
+
+## The automated playbook
+
+Steps 1–4 are pure enrichment, perfect for SOAR. The playbook fires on a new
+"Reported Phishing" incident and runs enrichment in parallel.
+
+```python
+# Pseudocode for the enrichment branch
+def enrich(email):
+    auth = check_email_auth(email.headers)      # SPF / DKIM / DMARC
+    urls = extract_urls(email.body)
+    verdicts = [detonate(u) for u in urls]       # sandbox each URL
+    iocs = virustotal_lookup(email.attachments)
+    return score(auth, verdicts, iocs)
+```
+
+## Scoring and auto-closure
+
+I assign a weighted score. Anything below the benign threshold is auto-closed
+with a note; anything above the malicious threshold triggers mailbox purge and
+pages the on-call analyst.
+
+> **Key lesson:** never let automation *delete* on its own without a human gate
+> early on. Build trust in the scoring first, then expand auto-actions.
+
+## Results
+
+After two months of tuning:
+
+- **MTTR:** 45m → 8m
+- **Analyst touches per phish:** ~6 → ~1
+- **Auto-closed (benign):** 60% of reports
+
+The analysts got their time back for the investigations that actually need a
+human brain.

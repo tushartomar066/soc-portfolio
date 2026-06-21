@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* offset for the sticky navbar when jumping to #anchors */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-base text-slate-200 font-sans antialiased;
+    background-image: radial-gradient(
+        circle at 20% 0%,
+        rgba(0, 212, 255, 0.08),
+        transparent 40%
+      ),
+      radial-gradient(circle at 80% 100%, rgba(0, 255, 159, 0.06), transparent 40%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    @apply bg-neon-green/30 text-white;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0f1e;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1c2842;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00d4ff66;
+  }
+}
+
+@layer components {
+  /* Reusable neon gradient text */
+  .text-gradient {
+    @apply bg-gradient-to-r from-neon-green to-neon-blue bg-clip-text text-transparent;
+  }
+
+  /* Glassmorphism surface used by navbar + cards */
+  .glass {
+    background: rgba(13, 21, 38, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    @apply border border-border;
+  }
+
+  /* Neon-bordered button base */
+  .btn-neon {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-md border px-6 py-3 font-mono text-sm font-medium transition-all duration-300;
+  }
+}
+
+@layer utilities {
+  /* Faint grid texture for the hero */
+  .bg-grid {
+    background-size: 40px 40px;
+    @apply bg-grid-overlay;
+  }
+
+  /* Animated scanline overlay (hero) */
+  .scanlines::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 212, 255, 0.025) 3px,
+      rgba(0, 0, 0, 0) 4px
+    );
+    z-index: 1;
+  }
+}
+
+/* ── Syntax highlighting (rehype-highlight / highlight.js) ──
+   A custom dark theme matching the neon palette. */
+.prose pre {
+  @apply bg-card border border-border rounded-lg overflow-x-auto text-sm;
+}
+.prose code {
+  @apply font-mono;
+}
+.hljs {
+  color: #c9d6e8;
+  background: transparent;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #5b6b8c;
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in {
+  color: #00d4ff;
+}
+.hljs-string,
+.hljs-attr,
+.hljs-template-variable {
+  color: #00ff9f;
+}
+.hljs-number,
+.hljs-literal {
+  color: #ffb86c;
+}
+.hljs-title,
+.hljs-section,
+.hljs-function .hljs-title {
+  color: #7fd1ff;
+}
+.hljs-variable,
+.hljs-name {
+  color: #c9d6e8;
+}
+.hljs-meta {
+  color: #8aa0c5;
+}
+.hljs-deletion {
+  color: #ff6b81;
+}
+.hljs-addition {
+  color: #00ff9f;
+}

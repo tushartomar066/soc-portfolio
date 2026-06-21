@@ -1,0 +1,63 @@
+---
+title: "Detecting Lateral Movement with Sysmon and KQL"
+date: "2025-03-12"
+excerpt: "How I built detections for pass-the-hash and remote service creation using Sysmon telemetry and Microsoft Sentinel KQL queries."
+tags: ["Threat Hunting", "Detection", "KQL"]
+author: "Tushar Singh Tomar"
+---
+
+Lateral movement is where a contained incident becomes a breach. Once an
+attacker has a foothold, their next move is to pivot — and that pivot leaves
+fingerprints in your endpoint telemetry. This post walks through the detections
+I built in my home lab.
+
+## The telemetry that matters
+
+Sysmon gives us high-fidelity process and network events. The key event IDs for
+lateral movement are:
+
+- **Event ID 1** — Process creation (catches `psexec`, `wmic`, remote service binaries)
+- **Event ID 3** — Network connection (catches SMB / RDP / WinRM pivots)
+- **Event ID 13** — Registry modification (service creation persistence)
+
+## A KQL detection for remote service creation
+
+Remote service creation (T1021.002) is a classic PsExec signature. Here's a
+Sentinel query that flags it:
+
+```kql
+SecurityEvent
+| where EventID == 7045          // a new service was installed
+| where ServiceFileName has_any ("\\\\", "ADMIN$", "\\Temp\\")
+| project TimeGenerated, Computer, Account, ServiceName, ServiceFileName
+| sort by TimeGenerated desc
+```
+
+The `has_any` filter is intentionally broad — services pointing at UNC paths or
+`ADMIN$` shares are rarely legitimate.
+
+## Reducing false positives
+
+Legitimate management tooling (SCCM, monitoring agents) will trip naive rules.
+I maintain an allowlist table and join against it:
+
+```kql
+let KnownServices = dynamic(["CcmExec", "HealthService", "Sense"]);
+SecurityEvent
+| where EventID == 7045
+| where ServiceName !in (KnownServices)
+| where ServiceFileName has_any ("\\\\", "ADMIN$")
+```
+
+## Mapping to MITRE ATT&CK
+
+| Technique | ID | Detection |
+|-----------|-----|-----------|
+| Remote Services: SMB/Windows Admin Shares | T1021.002 | EventID 7045 + UNC path |
+| Pass the Hash | T1550.002 | Logon Type 3 + NTLM + new process |
+
+## Takeaways
+
+Good lateral-movement detection isn't one magic rule — it's **layered**
+signals, tuned against your environment, mapped to ATT&CK so you know your
+coverage. Start broad, measure false positives, and tighten iteratively.
