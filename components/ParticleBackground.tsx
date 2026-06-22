@@ -5,86 +5,83 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 /**
- * Animated network of points (nodes) slowly rotating in 3D. Evokes a
- * threat-graph / network-traffic visual behind the hero.
+ * Floating wireframe "threat nodes" drifting in the void — icosahedrons and
+ * octahedrons in electric-violet / cyber-red at 35% opacity, slowly rotating
+ * in 3D. Replaces the old point-cloud network.
  */
-function ParticleField({ count = 900 }: { count?: number }) {
-  const pointsRef = useRef<THREE.Points>(null);
 
-  // Build a fixed random cloud once. We avoid Math.random in render paths
-  // by generating it inside useMemo (runs client-side, post-hydration).
-  const positions = useMemo(() => {
-    const arr = new Float32Array(count * 3);
+type ShapeKind = "ico" | "octa";
+
+interface Node {
+  kind: ShapeKind;
+  position: [number, number, number];
+  scale: number;
+  color: string;
+  rotSpeed: [number, number];
+}
+
+function ThreatNode({ node }: { node: Node }) {
+  const ref = useRef<THREE.Mesh>(null);
+
+  useFrame((_, delta) => {
+    if (!ref.current) return;
+    ref.current.rotation.x += delta * node.rotSpeed[0];
+    ref.current.rotation.y += delta * node.rotSpeed[1];
+  });
+
+  return (
+    <mesh ref={ref} position={node.position} scale={node.scale}>
+      {node.kind === "ico" ? (
+        <icosahedronGeometry args={[1, 0]} />
+      ) : (
+        <octahedronGeometry args={[1, 0]} />
+      )}
+      <meshBasicMaterial
+        color={node.color}
+        wireframe
+        transparent
+        opacity={0.35}
+      />
+    </mesh>
+  );
+}
+
+function ThreatField({ count = 14 }: { count?: number }) {
+  const group = useRef<THREE.Group>(null);
+
+  // Build a stable set of nodes once (client-side, post-hydration).
+  const nodes = useMemo<Node[]>(() => {
+    const arr: Node[] = [];
     for (let i = 0; i < count; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 14; // x
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 14; // y
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 14; // z
+      arr.push({
+        kind: i % 2 === 0 ? "ico" : "octa",
+        position: [
+          (Math.random() - 0.5) * 14,
+          (Math.random() - 0.5) * 10,
+          (Math.random() - 0.5) * 8 - 2,
+        ],
+        scale: 0.5 + Math.random() * 1.1,
+        color: i % 3 === 0 ? "#ff003c" : "#9d00ff",
+        rotSpeed: [
+          (Math.random() - 0.5) * 0.3,
+          (Math.random() - 0.5) * 0.3,
+        ],
+      });
     }
     return arr;
   }, [count]);
 
-  // Gentle continuous rotation; subtle parallax with elapsed time.
-  useFrame((state, delta) => {
-    if (!pointsRef.current) return;
-    pointsRef.current.rotation.y += delta * 0.05;
-    pointsRef.current.rotation.x += delta * 0.015;
-  });
-
-  return (
-    <points ref={pointsRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-          count={count}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.05}
-        color="#00d4ff"
-        transparent
-        opacity={0.8}
-        sizeAttenuation
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </points>
-  );
-}
-
-/** A few larger "hub" nodes in neon green for depth. */
-function HubNodes() {
-  const ref = useRef<THREE.Points>(null);
-
-  const positions = useMemo(() => {
-    const arr = new Float32Array(60 * 3);
-    for (let i = 0; i < 60; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 12;
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 12;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 12;
-    }
-    return arr;
-  }, []);
-
+  // Whole field drifts very slowly for parallax depth.
   useFrame((_, delta) => {
-    if (ref.current) ref.current.rotation.y -= delta * 0.03;
+    if (group.current) group.current.rotation.y += delta * 0.02;
   });
 
   return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} count={60} />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.13}
-        color="#00ff9f"
-        transparent
-        opacity={0.9}
-        sizeAttenuation
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </points>
+    <group ref={group}>
+      {nodes.map((node, i) => (
+        <ThreatNode key={i} node={node} />
+      ))}
+    </group>
   );
 }
 
@@ -92,13 +89,11 @@ export function ParticleBackground() {
   return (
     <div className="absolute inset-0 -z-0" aria-hidden="true">
       <Canvas
-        camera={{ position: [0, 0, 9], fov: 60 }}
+        camera={{ position: [0, 0, 11], fov: 60 }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
       >
-        <ambientLight intensity={0.5} />
-        <ParticleField />
-        <HubNodes />
+        <ThreatField />
       </Canvas>
     </div>
   );

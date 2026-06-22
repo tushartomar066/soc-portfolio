@@ -2,99 +2,94 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Briefcase, GraduationCap, MapPin, Target } from "lucide-react";
+import { TypeAnimation } from "react-type-animation";
 import { SectionHeading } from "@/components/SectionHeading";
+import { KaliTerminal } from "@/components/KaliTerminal";
+import { NeofetchCard } from "@/components/NeofetchCard";
+import { StatCounter } from "@/components/StatCounter";
 import { personal, about } from "@/data/personal";
-import { education } from "@/data/education";
+
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 export function About() {
   return (
     <section id="about" className="mx-auto max-w-6xl px-6 py-24">
-      <SectionHeading index="01." title="About Me" />
+      <SectionHeading label="// 01. about" title="About Me" />
 
-      <div className="grid items-center gap-12 md:grid-cols-[320px_1fr]">
-        {/* Profile photo */}
+      {/* Profile + threat badge */}
+      <div className="mb-12 flex flex-col items-center gap-6">
+        <div data-scroll-speed="2" className="relative">
+          {/* rotating conic gradient border */}
+          <div className="relative h-44 w-44 rounded-full p-[3px]">
+            <div className="absolute inset-0 animate-gradient-rotate rounded-full bg-[conic-gradient(from_0deg,#9d00ff,#ff003c,#00f5ff,#9d00ff)]" />
+            <div className="relative h-full w-full overflow-hidden rounded-full bg-background-primary p-1">
+              <Image
+                src={personal.profileImage}
+                alt="Tushar Singh Tomar"
+                width={176}
+                height={176}
+                sizes="176px"
+                className="h-full w-full rounded-full object-cover"
+                priority
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* SOC severity badge */}
+        <span className="inline-flex items-center gap-2 rounded-md border border-accent-green/50 bg-accent-green/10 px-3 py-1.5 font-mono text-xs font-semibold text-accent-green shadow-glow-green">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-accent-green" />
+          THREAT LEVEL: DEFENDER
+        </span>
+      </div>
+
+      {/* Neofetch + bio terminal side by side */}
+      <div className="grid gap-6 lg:grid-cols-2">
         <motion.div
-          initial={{ opacity: 0, x: -40 }}
+          initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6 }}
-          className="relative mx-auto"
+          transition={{ duration: 0.6, ease: EASE }}
         >
-          {/* neon ring + glow around the photo */}
-          <div className="relative h-72 w-72 overflow-hidden rounded-2xl border-2 border-neon-green/60 shadow-neon-green ring-2 ring-neon-green/20 ring-offset-4 ring-offset-base">
-            <Image
-              src={personal.profileImage}
-              alt="Tushar Singh Tomar"
-              width={288}
-              height={288}
-              sizes="288px"
-              className="h-full w-full object-cover"
-              priority
-            />
-          </div>
-          {/* neon corner accents */}
-          <div className="absolute -left-2 -top-2 h-6 w-6 rounded-tl-lg border-l-2 border-t-2 border-neon-green" />
-          <div className="absolute -bottom-2 -right-2 h-6 w-6 rounded-br-lg border-b-2 border-r-2 border-neon-blue" />
+          <NeofetchCard />
         </motion.div>
 
-        {/* Bio */}
         <motion.div
-          initial={{ opacity: 0, x: 40 }}
+          initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
         >
-          {/* quick stats */}
-          <div className="mb-6 flex flex-wrap gap-4">
-            <Stat
-              icon={<Briefcase className="h-4 w-4 text-neon-green" />}
-              label={about.currentRole}
-            />
-            <Stat
-              icon={<MapPin className="h-4 w-4 text-neon-blue" />}
-              label={personal.location}
-            />
-          </div>
-
-          {about.bio.map((para, i) => (
-            <p key={i} className="mb-4 leading-relaxed text-slate-300">
-              {para}
+          <KaliTerminal title="tushar@kali: ~/portfolio">
+            <p className="text-accent-purple">
+              ┌──(<span className="text-accent-red">tushar</span>㉿
+              <span className="text-accent-blue">kali</span>)-[~/portfolio]
             </p>
-          ))}
-
-          {/* education */}
-          {education.map((edu) => (
-            <div
-              key={edu.degree}
-              className="mt-4 flex gap-3 rounded-lg border-l-2 border-neon-blue bg-card/60 p-4"
-            >
-              <GraduationCap className="mt-1 h-5 w-5 shrink-0 text-neon-blue" />
-              <div>
-                <p className="text-sm font-semibold text-slate-100">{edu.degree}</p>
-                <p className="font-mono text-xs text-muted">
-                  {edu.university}, {edu.location} · {edu.dates}
-                </p>
-              </div>
+            <p className="text-accent-purple">
+              └─$ <span className="text-text-secondary">cat bio.txt</span>
+            </p>
+            <div className="mt-3 min-h-[12rem] leading-relaxed text-text-primary">
+              <TypeAnimation
+                sequence={[about.bio.join("\n\n")]}
+                speed={75}
+                cursor
+                wrapper="span"
+                style={{ whiteSpace: "pre-line", display: "block" }}
+              />
             </div>
-          ))}
-
-          {/* mission statement */}
-          <div className="mt-4 flex gap-3 rounded-lg border-l-2 border-neon-green bg-card/60 p-4">
-            <Target className="mt-1 h-5 w-5 shrink-0 text-neon-green" />
-            <p className="font-mono text-sm italic text-muted">{about.mission}</p>
-          </div>
+            <div className="mt-4 rounded-md border-l-2 border-accent-purple bg-black/30 p-3 text-xs italic text-text-secondary">
+              {about.mission}
+            </div>
+          </KaliTerminal>
         </motion.div>
       </div>
-    </section>
-  );
-}
 
-function Stat({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <div className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 font-mono text-xs text-slate-300">
-      {icon}
-      {label}
-    </div>
+      {/* Stat counters */}
+      <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <StatCounter value={10} suffix="+" label="Tools Mastered" />
+        <StatCounter value={3} suffix="+" label="Months at FICO" />
+        <StatCounter value={100} suffix="%" label="Blue Team Focus" />
+      </div>
+    </section>
   );
 }

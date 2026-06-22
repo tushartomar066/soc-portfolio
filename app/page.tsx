@@ -8,6 +8,7 @@ import { Experience } from "@/components/sections/Experience";
 import { Projects } from "@/components/sections/Projects";
 import { Blog } from "@/components/sections/Blog";
 import { Contact } from "@/components/sections/Contact";
+import { SectionDivider } from "@/components/SectionDivider";
 import { getAllPosts } from "@/lib/mdx";
 
 // Home is a Server Component: blog metadata is loaded on the server and
@@ -20,12 +21,19 @@ export default async function Home() {
       <Navbar />
       <main>
         <Hero />
+        <SectionDivider />
         <About />
+        <SectionDivider flip />
         <Skills />
+        <SectionDivider />
         <Certifications />
+        <SectionDivider flip />
         <Experience />
+        <SectionDivider />
         <Projects />
+        <SectionDivider flip />
         <Blog posts={posts} />
+        <SectionDivider />
         <Contact />
       </main>
       <Footer />

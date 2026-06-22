@@ -42,7 +42,7 @@ export default function PostPage({ params }: Params) {
     <main className="mx-auto min-h-screen max-w-3xl px-6 py-24">
       <Link
         href="/blog"
-        className="mb-10 inline-flex items-center gap-2 font-mono text-sm text-neon-green hover:underline"
+        className="mb-10 inline-flex items-center gap-2 font-mono text-sm text-accent-purple hover:underline"
       >
         <ArrowLeft className="h-4 w-4" /> All posts
       </Link>
@@ -52,24 +52,24 @@ export default function PostPage({ params }: Params) {
           {post.tags.map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-base px-2.5 py-0.5 font-mono text-[11px] text-neon-green"
+              className="rounded-full bg-background-secondary px-2.5 py-0.5 font-mono text-[11px] text-accent-purple"
             >
               {tag}
             </span>
           ))}
         </div>
 
-        <h1 className="text-3xl font-bold text-slate-100 sm:text-4xl">{post.title}</h1>
+        <h1 className="font-heading text-3xl font-bold text-text-primary sm:text-4xl">{post.title}</h1>
 
-        <div className="mt-3 flex items-center gap-2 font-mono text-xs text-muted">
+        <div className="mt-3 flex items-center gap-2 font-mono text-xs text-text-secondary">
           <Calendar className="h-3 w-3" /> {post.date}
           {post.author && <span>· {post.author}</span>}
         </div>
 
-        <div className="mt-4 h-px w-full bg-gradient-to-r from-neon-green to-transparent" />
+        <div className="mt-4 h-px w-full bg-gradient-to-r from-accent-purple to-transparent" />
 
         {/* Rendered MDX with GFM + syntax highlighting + heading anchors */}
-        <div className="prose prose-invert mt-8 max-w-none prose-headings:text-slate-100 prose-a:text-neon-blue prose-strong:text-slate-100 prose-code:text-neon-green">
+        <div className="prose prose-invert mt-8 max-w-none prose-headings:text-text-primary prose-a:text-accent-blue prose-strong:text-text-primary prose-code:text-accent-purple">
           <MDXRemote
             source={post.content}
             options={{

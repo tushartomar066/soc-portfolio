@@ -56,9 +56,9 @@ export function Typewriter({
   }, [text, deleting, index, words, typingSpeed, deletingSpeed, pauseMs]);
 
   return (
-    <span className="font-mono text-neon-green">
+    <span className="font-mono text-accent-blue">
       {text}
-      <span className="ml-0.5 inline-block w-[2px] animate-blink bg-neon-green align-middle text-transparent">
+      <span className="ml-0.5 inline-block w-[2px] animate-blink bg-accent-red align-middle text-transparent">
         |
       </span>
     </span>

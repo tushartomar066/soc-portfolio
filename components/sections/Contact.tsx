@@ -5,9 +5,12 @@ import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 // TODO: Add EmailJS keys to enable real email sending
 // import emailjs from "@emailjs/browser";
-import { Send, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { SocialRow } from "@/components/SocialRow";
+import { InteractiveTerminal } from "@/components/sections/InteractiveTerminal";
+
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 interface FormState {
   name: string;
@@ -64,95 +67,83 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="mx-auto max-w-3xl px-6 py-24">
+    <section id="contact" className="mx-auto max-w-6xl px-6 py-24">
       <SectionHeading
-        index="07."
+        label="// 05. contact"
         title="Get In Touch"
-        subtitle="Have a role, a project, or a threat to discuss? Drop me a line."
+        subtitle="Have a role, a project, or a threat to discuss? Drop me a line — or just talk to the terminal."
       />
 
-      <motion.form
-        onSubmit={handleSubmit}
-        noValidate
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.5 }}
-        className="space-y-5 rounded-2xl border border-border bg-card p-8"
-      >
-        <Field label="Name" error={errors.name}>
-          <input
-            type="text"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            placeholder="Jane Doe"
-            className="input"
-          />
-        </Field>
-
-        <Field label="Email" error={errors.email}>
-          <input
-            type="email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            placeholder="jane@company.com"
-            className="input"
-          />
-        </Field>
-
-        <Field label="Message" error={errors.message}>
-          <textarea
-            rows={5}
-            value={form.message}
-            onChange={(e) => setForm({ ...form, message: e.target.value })}
-            placeholder="Tell me what's on your mind..."
-            className="input resize-none"
-          />
-        </Field>
-
-        <button
-          type="submit"
-          disabled={sending}
-          className="btn-neon w-full border-neon-green text-neon-green hover:bg-neon-green/10 hover:shadow-neon-green disabled:cursor-not-allowed disabled:opacity-60"
+      <div className="grid items-stretch gap-6 lg:grid-cols-2">
+        {/* Left — contact form */}
+        <motion.form
+          onSubmit={handleSubmit}
+          noValidate
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: EASE }}
+          className="space-y-5 rounded-2xl border border-glow bg-background-secondary p-8"
         >
-          {sending ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" /> Sending...
-            </>
-          ) : (
-            <>
-              Send Message <Send className="h-4 w-4" />
-            </>
-          )}
-        </button>
-      </motion.form>
+          <Field label="Name" error={errors.name}>
+            <input
+              type="text"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="Jane Doe"
+              className="input"
+            />
+          </Field>
+
+          <Field label="Email" error={errors.email}>
+            <input
+              type="email"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              placeholder="jane@company.com"
+              className="input"
+            />
+          </Field>
+
+          <Field label="Message" error={errors.message}>
+            <textarea
+              rows={5}
+              value={form.message}
+              onChange={(e) => setForm({ ...form, message: e.target.value })}
+              placeholder="Tell me what's on your mind..."
+              className="input resize-none"
+            />
+          </Field>
+
+          <button
+            type="submit"
+            disabled={sending}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-md border-2 border-accent-purple px-6 py-3 font-mono text-sm font-medium text-accent-purple transition-all duration-300 hover:bg-accent-purple hover:text-white hover:shadow-glow-purple disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {sending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" /> Sending...
+              </>
+            ) : (
+              <>&gt;_ SEND_MESSAGE</>
+            )}
+          </button>
+        </motion.form>
+
+        {/* Right — interactive terminal */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.1 }}
+        >
+          <InteractiveTerminal />
+        </motion.div>
+      </div>
 
       <div className="mt-10 flex justify-center">
         <SocialRow />
       </div>
-
-      {/* Local input styling kept inline to keep the component self-contained */}
-      <style jsx>{`
-        :global(.input) {
-          width: 100%;
-          border-radius: 0.5rem;
-          border: 1px solid #1c2842;
-          background-color: #0a0f1e;
-          padding: 0.65rem 0.9rem;
-          font-size: 0.875rem;
-          color: #e2e8f0;
-          font-family: var(--font-jetbrains);
-          transition: all 0.2s ease;
-        }
-        :global(.input::placeholder) {
-          color: #4a5a7a;
-        }
-        :global(.input:focus) {
-          outline: none;
-          border-color: #00ff9f;
-          box-shadow: 0 0 0 1px #00ff9f, 0 0 12px rgba(0, 255, 159, 0.25);
-        }
-      `}</style>
     </section>
   );
 }
@@ -168,9 +159,11 @@ function Field({
 }) {
   return (
     <div>
-      <label className="mb-1.5 block font-mono text-xs text-muted">{label}</label>
+      <label className="mb-1.5 block font-mono text-xs text-text-secondary">
+        {label}
+      </label>
       {children}
-      {error && <p className="mt-1 font-mono text-xs text-red-400">{error}</p>}
+      {error && <p className="mt-1 font-mono text-xs text-accent-red">{error}</p>}
     </div>
   );
 }

@@ -1,53 +1,67 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/SectionHeading";
+import { KaliTerminal } from "@/components/KaliTerminal";
 import { skillCategories } from "@/data/skills";
+
+/** kebab-case a category for the terminal path, e.g. "SIEM & Detection" → "siem-detection". */
+function slug(s: string) {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 export function Skills() {
   return (
-    <section id="skills" className="mx-auto max-w-6xl px-6 py-24">
-      <SectionHeading
-        index="02."
-        title="Skills & Tools"
-        subtitle="The detection, response, and automation stack I work with daily."
-      />
+    <section
+      id="skills"
+      data-scroll-direction="horizontal"
+      className="relative py-24 md:min-h-screen md:py-0"
+    >
+      <div className="mx-auto max-w-6xl px-6 md:pt-24">
+        <SectionHeading
+          label="// 02. skills"
+          title="Skills & Tools"
+          subtitle="The detection, response, and automation stack I work with daily."
+        />
+      </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {skillCategories.map((cat, i) => (
-          <motion.div
-            key={cat.category}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.45, delay: i * 0.07 }}
-            className="rounded-xl border border-border bg-card p-6 transition-colors hover:border-neon-blue/40"
-          >
-            <h3
-              className={`mb-4 font-mono text-sm font-semibold ${
-                cat.accent === "green" ? "text-neon-green" : "text-neon-blue"
-              }`}
+      {/*
+        On desktop the [data-h-track] row is pinned and scrolled horizontally
+        by lib/scroll.ts. On mobile it falls back to a normal wrapping grid.
+      */}
+      <div className="mx-auto max-w-6xl px-6 md:max-w-none md:px-0">
+        <div
+          data-h-track
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 md:flex md:w-max md:flex-nowrap md:gap-6 md:px-[6vw]"
+        >
+          {skillCategories.map((cat) => (
+            <KaliTerminal
+              key={cat.category}
+              title={`~/skills/${slug(cat.category)}`}
+              className="md:w-[340px] md:shrink-0"
             >
-              {cat.category}
-            </h3>
-
-            <div className="flex flex-wrap gap-2">
-              {cat.skills.map((skill) => (
-                <motion.span
-                  key={skill}
-                  whileHover={{ scale: 1.08 }}
-                  className={`cursor-default rounded-md border px-3 py-1.5 font-mono text-xs text-slate-300 transition-all duration-300 ${
-                    cat.accent === "green"
-                      ? "border-border hover:border-neon-green hover:text-neon-green hover:shadow-neon-green"
-                      : "border-border hover:border-neon-blue hover:text-neon-blue hover:shadow-neon-blue"
-                  }`}
-                >
-                  {skill}
-                </motion.span>
-              ))}
-            </div>
-          </motion.div>
-        ))}
+              <p className="text-accent-purple">
+                ┌──(<span className="text-accent-red">tushar</span>㉿
+                <span className="text-accent-blue">kali</span>)-[~/skills/
+                {slug(cat.category)}]
+              </p>
+              <p className="mb-2 text-accent-purple">
+                └─$ <span className="text-text-secondary">ls -la</span>
+              </p>
+              <ul className="space-y-1">
+                {cat.skills.map((skill) => (
+                  <li key={skill} className="text-text-primary">
+                    <span className="text-accent-green">-rwxr--r--</span>{" "}
+                    <span className="text-text-secondary">tushar</span>{" "}
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </KaliTerminal>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import dynamic from "next/dynamic";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import { personal } from "@/data/personal";
+import { SmoothScroll } from "@/components/providers/SmoothScroll";
 
 // Fonts loaded via next/font and exposed as CSS variables to Tailwind.
 const inter = Inter({
@@ -16,6 +18,30 @@ const jetbrains = JetBrains_Mono({
   variable: "--font-jetbrains",
   display: "swap",
 });
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+// Client-only decorative overlays — disable SSR to avoid window/canvas errors.
+const BootSequence = dynamic(
+  () => import("@/components/BootSequence").then((m) => m.BootSequence),
+  { ssr: false }
+);
+const CustomCursor = dynamic(
+  () => import("@/components/CustomCursor").then((m) => m.CustomCursor),
+  { ssr: false }
+);
+const KonamiEgg = dynamic(
+  () => import("@/components/KonamiEgg").then((m) => m.KonamiEgg),
+  { ssr: false }
+);
+const ScrollProgress = dynamic(
+  () => import("@/components/ScrollProgress").then((m) => m.ScrollProgress),
+  { ssr: false }
+);
 
 // Full SEO metadata (App Router). Update personal.url before deploy.
 export const metadata: Metadata = {
@@ -69,17 +95,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrains.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrains.variable} ${spaceGrotesk.variable}`}
+    >
       <body>
-        {children}
+        <BootSequence />
+        <ScrollProgress />
+        <CustomCursor />
+        <KonamiEgg />
+
+        <SmoothScroll>{children}</SmoothScroll>
+
+        {/* global grain/noise texture */}
+        <div className="noise-overlay" aria-hidden="true" />
+
         {/* Global toast portal for the contact form */}
         <Toaster
           position="bottom-right"
           toastOptions={{
             style: {
-              background: "#0d1526",
-              color: "#e2e8f0",
-              border: "1px solid #1c2842",
+              background: "#0e0018",
+              color: "#e8e8f0",
+              border: "1px solid rgba(157,0,255,0.4)",
               fontFamily: "var(--font-jetbrains)",
               fontSize: "0.85rem",
             },
