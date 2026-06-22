@@ -11,11 +11,17 @@ import { InteractiveTerminal } from "@/components/sections/InteractiveTerminal";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
-// EmailJS config — all public/browser-safe values from .env.local.
-// (Never put the EmailJS *private* key here; this code runs in the browser.)
-const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+// EmailJS config. These are all PUBLIC/browser-safe values (they ship in the
+// client bundle by design), so we keep them as inline defaults and let an
+// env var override if set. This makes the live site work without configuring
+// Vercel env vars. Abuse is prevented via EmailJS "Allowed Origins", NOT by
+// hiding these. (Never put the EmailJS *private* key here.)
+const EMAILJS_SERVICE_ID =
+  process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "service_bnq2sgw";
+const EMAILJS_TEMPLATE_ID =
+  process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "template_p7jta4w";
+const EMAILJS_PUBLIC_KEY =
+  process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "Wlw6Akakn5oOjap9m";
 const EMAILJS_READY =
   !!EMAILJS_SERVICE_ID && !!EMAILJS_TEMPLATE_ID && !!EMAILJS_PUBLIC_KEY;
 
