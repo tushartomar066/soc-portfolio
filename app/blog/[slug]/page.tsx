@@ -8,7 +8,6 @@ import remarkGfm from "remark-gfm";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 import { getPostBySlug, getPostSlugs } from "@/lib/mdx";
 import { BlogTransition } from "@/components/BlogTransition";
-import { BlogReadingProgress } from "@/components/BlogReadingProgress";
 import { TableOfContents } from "@/components/TableOfContents";
 import { CodeBlock } from "@/components/CopyButton";
 
@@ -43,11 +42,7 @@ export default function PostPage({ params }: Params) {
   if (!post) notFound();
 
   return (
-    <>
-      {/* Reading-progress bar scoped to the article */}
-      <BlogReadingProgress />
-
-      <BlogTransition>
+    <BlogTransition>
         <main className="mx-auto min-h-screen max-w-6xl px-6 py-24">
           <Link
             href="/blog"
@@ -106,7 +101,6 @@ export default function PostPage({ params }: Params) {
             </article>
           </div>
         </main>
-      </BlogTransition>
-    </>
+    </BlogTransition>
   );
 }
