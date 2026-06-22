@@ -9,9 +9,8 @@ import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/scroll";
  *
  * - Wraps the app in a root Lenis instance (lerp 0.08 / duration 1.4).
  * - Disabled on screens < 768px and when prefers-reduced-motion → native scroll.
- * - Drives GSAP ScrollTrigger from Lenis' scroll loop, then animates:
- *     • every [data-scroll-speed] element  → vertical parallax
- *     • [data-scroll-direction="horizontal"] → pinned horizontal scroll
+ * - Drives GSAP ScrollTrigger from Lenis' scroll loop, then animates every
+ *   [data-scroll-speed] element with a vertical parallax tween.
  *   All triggers/tweens are cleaned up on unmount / breakpoint change.
  */
 export function SmoothScroll({ children }: { children: ReactNode }) {
@@ -50,7 +49,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
     };
   }, [enabled]);
 
-  // Parallax + horizontal-skills driver.
+  // Vertical parallax driver for [data-scroll-speed] elements.
   useEffect(() => {
     if (!enabled) return;
 
@@ -72,30 +71,6 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
           },
         });
       });
-
-      // ── Horizontal scroll for the skills track ──
-      const hSection = document.querySelector<HTMLElement>(
-        '[data-scroll-direction="horizontal"]'
-      );
-      const track = hSection?.querySelector<HTMLElement>("[data-h-track]");
-      if (hSection && track) {
-        const distance = () => track.scrollWidth - window.innerWidth;
-        if (distance() > 0) {
-          gsap.to(track, {
-            x: () => -distance(),
-            ease: "none",
-            scrollTrigger: {
-              trigger: hSection,
-              start: "top top",
-              end: () => `+=${distance()}`,
-              scrub: 1,
-              pin: true,
-              invalidateOnRefresh: true,
-              anticipatePin: 1,
-            },
-          });
-        }
-      }
     });
 
     ScrollTrigger.refresh();

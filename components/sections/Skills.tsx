@@ -1,8 +1,11 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/SectionHeading";
 import { KaliTerminal } from "@/components/KaliTerminal";
 import { skillCategories } from "@/data/skills";
+
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
 /** kebab-case a category for the terminal path, e.g. "SIEM & Detection" → "siem-detection". */
 function slug(s: string) {
@@ -14,35 +17,29 @@ function slug(s: string) {
 
 export function Skills() {
   return (
-    <section
-      id="skills"
-      data-scroll-direction="horizontal"
-      className="relative py-24 md:min-h-screen md:py-0"
-    >
-      <div className="mx-auto max-w-6xl px-6 md:pt-24">
-        <SectionHeading
-          label="// 02. skills"
-          title="Skills & Tools"
-          subtitle="The detection, response, and automation stack I work with daily."
-        />
-      </div>
+    <section id="skills" className="mx-auto max-w-6xl px-6 py-24">
+      <SectionHeading
+        label="// 02. skills"
+        title="Skills & Tools"
+        subtitle="The detection, response, and automation stack I work with daily."
+      />
 
-      {/*
-        On desktop the [data-h-track] row is pinned and scrolled horizontally
-        by lib/scroll.ts. On mobile it falls back to a normal wrapping grid.
-      */}
-      <div className="mx-auto max-w-6xl px-6 md:max-w-none md:px-0">
-        <div
-          data-h-track
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 md:flex md:w-max md:flex-nowrap md:gap-6 md:px-[6vw]"
-        >
-          {skillCategories.map((cat) => (
+      {/* Responsive grid of Kali-terminal cards (3 / 2 / 1 columns). */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {skillCategories.map((cat, i) => (
+          <motion.div
+            key={cat.category}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.45, delay: (i % 3) * 0.08, ease: EASE }}
+            className="h-full"
+          >
             <KaliTerminal
-              key={cat.category}
               title={`~/skills/${slug(cat.category)}`}
-              className="md:w-[340px] md:shrink-0"
+              className="h-full"
             >
-              <p className="text-accent-purple">
+              <p className="break-all text-accent-purple">
                 ┌──(<span className="text-accent-red">tushar</span>㉿
                 <span className="text-accent-blue">kali</span>)-[~/skills/
                 {slug(cat.category)}]
@@ -54,14 +51,13 @@ export function Skills() {
                 {cat.skills.map((skill) => (
                   <li key={skill} className="text-text-primary">
                     <span className="text-accent-green">-rwxr--r--</span>{" "}
-                    <span className="text-text-secondary">tushar</span>{" "}
-                    {skill}
+                    <span className="text-text-secondary">tushar</span> {skill}
                   </li>
                 ))}
               </ul>
             </KaliTerminal>
-          ))}
-        </div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
