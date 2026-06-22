@@ -30,10 +30,6 @@ const BootSequence = dynamic(
   () => import("@/components/BootSequence").then((m) => m.BootSequence),
   { ssr: false }
 );
-const CustomCursor = dynamic(
-  () => import("@/components/CustomCursor").then((m) => m.CustomCursor),
-  { ssr: false }
-);
 const KonamiEgg = dynamic(
   () => import("@/components/KonamiEgg").then((m) => m.KonamiEgg),
   { ssr: false }
@@ -102,7 +98,6 @@ export default function RootLayout({
       <body>
         <BootSequence />
         <ScrollProgress />
-        <CustomCursor />
         <KonamiEgg />
 
         <SmoothScroll>{children}</SmoothScroll>
