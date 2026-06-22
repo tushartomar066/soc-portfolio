@@ -40,12 +40,6 @@
     color: #fff;
   }
 
-  /* Custom-cursor mode: hide the native cursor on desktop only. */
-  body.cursor-none,
-  body.cursor-none * {
-    cursor: none !important;
-  }
-
   /* Custom scrollbar — 4px, void track, purple thumb → red on hover */
   ::-webkit-scrollbar {
     width: 4px;
