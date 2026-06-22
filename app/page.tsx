@@ -6,6 +6,7 @@ import { Skills } from "@/components/sections/Skills";
 import { Certifications } from "@/components/sections/Certifications";
 import { Experience } from "@/components/sections/Experience";
 import { Projects } from "@/components/sections/Projects";
+import { Ctf } from "@/components/sections/Ctf";
 import { Blog } from "@/components/sections/Blog";
 import { Contact } from "@/components/sections/Contact";
 import { SectionDivider } from "@/components/SectionDivider";
@@ -32,6 +33,8 @@ export default async function Home() {
         <SectionDivider />
         <Projects />
         <SectionDivider flip />
+        <Ctf />
+        <SectionDivider />
         <Blog posts={posts} />
         <SectionDivider />
         <Contact />

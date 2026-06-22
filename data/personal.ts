@@ -45,3 +45,11 @@ export const about = {
   mission:
     "My goal right now is simple: keep learning, sharpen my detection and investigation skills every day, and grow into a strong defender on the blue team.",
 } as const;
+
+/** Live "currently learning" list — easy to update; shown in the About badge. */
+export const currentlyLearning: string[] = [
+  "CompTIA Security+",
+  "Microsoft SC-200",
+  "Threat Hunting with KQL",
+  "OSCP Prep",
+];

@@ -4,16 +4,25 @@ import { useEffect, useRef, useState } from "react";
 import { gsap, isMobile, prefersReducedMotion } from "@/lib/scroll";
 
 /**
- * Custom cursor: a 6px red dot + a 32px purple ring that lags behind with a
- * spring (GSAP quickTo). Over buttons/links the ring locks to a 52px reticle
- * (dot hidden); over text it morphs to an ice-blue I-beam.
+ * SOC targeting-reticle cursor.
  *
- * Desktop + motion-enabled only. On touch / reduced-motion it renders nothing
- * and leaves the native cursor intact.
+ * - Inner: 16px crosshair (4 lines with a center gap), #ff003c.
+ * - Outer: 40px square with corner brackets only (#9d00ff), spring-lagged
+ *   behind the pointer (GSAP quickTo, lerp ~0.12).
+ * - Over button/link: outer → 60px, faint purple fill, crosshair → #9d00ff
+ *   (locked-on). Over text: crosshair shrinks to an 8px I-beam.
+ * - A 6-dot fading trail (#9d00ff) follows via a ring buffer.
+ *
+ * Desktop + motion-enabled only; on touch / reduced-motion / <768px it renders
+ * nothing and leaves the native cursor intact.
  */
+
+const TRAIL_LENGTH = 6;
+
 export function CustomCursor() {
-  const dotRef = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  const outerRef = useRef<HTMLDivElement>(null);
+  const trailRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -23,22 +32,47 @@ export function CustomCursor() {
     setActive(true);
     document.body.classList.add("cursor-none");
 
-    const dot = dotRef.current!;
-    const ring = ringRef.current!;
+    const inner = innerRef.current!;
+    const outer = outerRef.current!;
 
-    const xDot = gsap.quickTo(dot, "x", { duration: 0.12, ease: "power3" });
-    const yDot = gsap.quickTo(dot, "y", { duration: 0.12, ease: "power3" });
-    const xRing = gsap.quickTo(ring, "x", { duration: 0.4, ease: "power3" });
-    const yRing = gsap.quickTo(ring, "y", { duration: 0.4, ease: "power3" });
+    // Inner crosshair tracks tightly; outer reticle lags (spring).
+    const xIn = gsap.quickTo(inner, "x", { duration: 0.06, ease: "power3" });
+    const yIn = gsap.quickTo(inner, "y", { duration: 0.06, ease: "power3" });
+    const xOut = gsap.quickTo(outer, "x", { duration: 0.4, ease: "power3" });
+    const yOut = gsap.quickTo(outer, "y", { duration: 0.4, ease: "power3" });
+
+    // Trail ring buffer of recent positions.
+    const positions = Array.from({ length: TRAIL_LENGTH }, () => ({
+      x: 0,
+      y: 0,
+    }));
+    let head = 0;
 
     const onMove = (e: MouseEvent) => {
-      xDot(e.clientX);
-      yDot(e.clientY);
-      xRing(e.clientX);
-      yRing(e.clientY);
+      xIn(e.clientX);
+      yIn(e.clientY);
+      xOut(e.clientX);
+      yOut(e.clientY);
+
+      positions[head] = { x: e.clientX, y: e.clientY };
+      head = (head + 1) % TRAIL_LENGTH;
+      // Render trail: most-recent dot first, fading back.
+      for (let i = 0; i < TRAIL_LENGTH; i++) {
+        const idx = (head - 1 - i + TRAIL_LENGTH * 2) % TRAIL_LENGTH;
+        const dot = trailRefs.current[i];
+        const p = positions[idx];
+        if (dot && p) {
+          gsap.to(dot, {
+            x: p.x,
+            y: p.y,
+            duration: 0.18,
+            ease: "power2.out",
+            overwrite: true,
+          });
+        }
+      }
     };
 
-    // Detect what we're hovering and switch cursor modes.
     const onOver = (e: MouseEvent) => {
       const t = e.target as HTMLElement;
       let mode = "default";
@@ -49,8 +83,8 @@ export function CustomCursor() {
       ) {
         mode = "text";
       }
-      ring.dataset.mode = mode;
-      dot.style.opacity = mode === "lock" ? "0" : "1";
+      outer.dataset.mode = mode;
+      inner.dataset.mode = mode;
     };
 
     window.addEventListener("mousemove", onMove);
@@ -67,17 +101,55 @@ export function CustomCursor() {
 
   return (
     <>
+      {/* Trail dots (oldest = faintest) */}
+      {Array.from({ length: TRAIL_LENGTH }).map((_, i) => (
+        <div
+          key={i}
+          ref={(el) => {
+            trailRefs.current[i] = el;
+          }}
+          aria-hidden="true"
+          className="pointer-events-none fixed left-0 top-0 z-[9997] h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-purple"
+          style={{ opacity: 0.6 - i * (0.5 / TRAIL_LENGTH) }}
+        />
+      ))}
+
+      {/* Inner crosshair */}
       <div
-        ref={dotRef}
-        aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9998] h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-red"
-      />
-      <div
-        ref={ringRef}
+        ref={innerRef}
         data-mode="default"
         aria-hidden="true"
-        className="pointer-events-none fixed left-0 top-0 z-[9998] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent-purple transition-[width,height,background-color,border-radius] duration-200 data-[mode=default]:h-8 data-[mode=default]:w-8 data-[mode=lock]:h-[52px] data-[mode=lock]:w-[52px] data-[mode=lock]:bg-accent-purple/[0.15] data-[mode=text]:h-6 data-[mode=text]:w-1 data-[mode=text]:rounded-sm data-[mode=text]:border-accent-blue"
-      />
+        className="cursor-inner pointer-events-none fixed left-0 top-0 z-[9999] -translate-x-1/2 -translate-y-1/2"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          className="cursor-cross"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          {/* four lines meeting at center with a 4px gap (center 8, gap ±2) */}
+          <line x1="8" y1="0" x2="8" y2="6" />
+          <line x1="8" y1="10" x2="8" y2="16" />
+          <line x1="0" y1="8" x2="6" y2="8" />
+          <line x1="10" y1="8" x2="16" y2="8" />
+        </svg>
+      </div>
+
+      {/* Outer corner-bracket reticle */}
+      <div
+        ref={outerRef}
+        data-mode="default"
+        aria-hidden="true"
+        className="cursor-outer pointer-events-none fixed left-0 top-0 z-[9998] -translate-x-1/2 -translate-y-1/2"
+      >
+        <span className="corner corner-tl" />
+        <span className="corner corner-tr" />
+        <span className="corner corner-bl" />
+        <span className="corner corner-br" />
+      </div>
     </>
   );
 }

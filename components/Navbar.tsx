@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { navLinks } from "@/data/contact";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -87,14 +88,17 @@ export function Navbar() {
           ))}
         </ul>
 
-        {/* Mobile toggle */}
-        <button
-          className="text-text-primary md:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Toggle navigation menu"
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        {/* Right side: theme toggle + mobile hamburger */}
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <button
+            className="text-text-primary md:hidden"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Toggle navigation menu"
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}

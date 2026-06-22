@@ -22,10 +22,19 @@ export interface PostFrontmatter {
 
 export interface PostMeta extends PostFrontmatter {
   slug: string;
+  /** estimated read time, e.g. "4 min read" */
+  readingTime: string;
 }
 
 export interface Post extends PostMeta {
   content: string; // raw MDX body
+}
+
+/** Words ÷ 200 wpm, rounded up to the nearest minute. */
+function computeReadingTime(content: string): string {
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.ceil(words / 200));
+  return `${minutes} min read`;
 }
 
 /** All post slugs (filenames without .mdx). */
@@ -53,6 +62,7 @@ export function getPostBySlug(slug: string): Post | null {
     excerpt: fm.excerpt,
     tags: fm.tags ?? [],
     author: fm.author,
+    readingTime: computeReadingTime(content),
     content,
   };
 }

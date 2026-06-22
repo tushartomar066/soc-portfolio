@@ -8,6 +8,8 @@ interface MagneticButtonProps {
   children: ReactNode;
   download?: string | boolean;
   className?: string;
+  /** fire a POST to /api/cv-download before navigating (CV download tracker) */
+  trackCvDownload?: boolean;
 }
 
 /**
@@ -21,6 +23,7 @@ export function MagneticButton({
   children,
   download,
   className = "",
+  trackCvDownload = false,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLAnchorElement>(null);
   const xTo = useRef<((v: number) => void) | null>(null);
@@ -56,6 +59,12 @@ export function MagneticButton({
     yTo.current(0);
   }
 
+  function onClick() {
+    if (!trackCvDownload) return;
+    // Fire-and-forget; never block or fail the download if tracking is down.
+    fetch("/api/cv-download", { method: "POST" }).catch(() => {});
+  }
+
   return (
     <a
       ref={ref}
@@ -63,6 +72,7 @@ export function MagneticButton({
       download={download}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
+      onClick={onClick}
       className={`magnetic group inline-flex items-center justify-center gap-2 rounded-md border-2 border-accent-purple px-6 py-3 font-mono text-sm font-medium text-accent-purple shadow-glow-purple transition-[background-color,color,transform,box-shadow] duration-300 hover:scale-105 hover:bg-accent-purple hover:text-white ${className}`}
     >
       {children}

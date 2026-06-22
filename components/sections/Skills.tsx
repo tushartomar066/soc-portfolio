@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/SectionHeading";
 import { KaliTerminal } from "@/components/KaliTerminal";
+import { SkillRadarChart } from "@/components/SkillRadarChart";
 import { skillCategories } from "@/data/skills";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
@@ -59,6 +60,9 @@ export function Skills() {
           </motion.div>
         ))}
       </div>
+
+      {/* Supplementary radar visualization */}
+      <SkillRadarChart />
     </section>
   );
 }

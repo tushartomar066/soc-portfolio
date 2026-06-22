@@ -3,6 +3,30 @@
 @tailwind utilities;
 
 @layer base {
+  /* ── Theme tokens (space-separated RGB channels for Tailwind alpha) ── */
+  :root {
+    --bg-primary: 8 0 16; /* #080010 */
+    --bg-secondary: 14 0 24; /* #0e0018 */
+    --accent-purple: 157 0 255; /* #9d00ff */
+    --accent-red: 255 0 60; /* #ff003c */
+    --accent-blue: 0 245 255; /* #00f5ff */
+    --accent-green: 57 255 20; /* #39ff14 */
+    --text-primary: 232 232 240; /* #e8e8f0 */
+    --text-secondary: 136 136 170; /* #8888aa */
+  }
+
+  /* Light-mode overrides (next-themes sets class="light" on <html>) */
+  .light {
+    --bg-primary: 240 240 245; /* #f0f0f5 */
+    --bg-secondary: 224 224 238; /* #e0e0ee */
+    --accent-purple: 119 0 204; /* #7700cc */
+    --accent-red: 204 0 46; /* #cc002e */
+    --accent-blue: 0 150 170; /* darker ice-blue for contrast on light */
+    --accent-green: 30 160 20; /* darker green for contrast on light */
+    --text-primary: 10 0 16; /* #0a0010 */
+    --text-secondary: 68 68 102; /* #444466 */
+  }
+
   html {
     scroll-behavior: smooth;
     /* offset for the sticky navbar when jumping to #anchors */
@@ -38,6 +62,13 @@
   ::selection {
     background: rgba(157, 0, 255, 0.35);
     color: #fff;
+  }
+
+  /* Custom-cursor mode: hide the native cursor (desktop only — the class is
+     added by CustomCursor, which never mounts on touch/mobile). */
+  body.cursor-none,
+  body.cursor-none * {
+    cursor: none !important;
   }
 
   /* Custom scrollbar — 4px, void track, purple thumb → red on hover */
@@ -165,7 +196,88 @@
     opacity: 0.03;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
+
+  /* ── SOC targeting-reticle cursor ── */
+  .cursor-cross {
+    color: #ff003c;
+    transition: color 0.2s ease;
+  }
+  .cursor-inner[data-mode="lock"] .cursor-cross {
+    color: #9d00ff;
+  }
+  .cursor-inner[data-mode="text"] .cursor-cross {
+    color: #9d00ff;
+    width: 8px;
+    height: 8px;
+  }
+
+  .cursor-outer {
+    width: 40px;
+    height: 40px;
+    transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+    background-color: transparent;
+  }
+  .cursor-outer[data-mode="lock"] {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(157, 0, 255, 0.1);
+  }
+  .cursor-outer[data-mode="text"] {
+    width: 24px;
+    height: 24px;
+  }
+  /* corner brackets only (targeting reticle) */
+  .cursor-outer .corner {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border: 2px solid #9d00ff;
+  }
+  .cursor-outer .corner-tl {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+  .cursor-outer .corner-tr {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+  }
+  .cursor-outer .corner-bl {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+  }
+  .cursor-outer .corner-br {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+  }
 }
+
+/* ── Light-mode tweaks for elements that hardcode dark surfaces ── */
+.light body {
+  background-image: radial-gradient(
+      circle at 18% -5%,
+      rgba(119, 0, 204, 0.1),
+      transparent 42%
+    ),
+    radial-gradient(circle at 85% 105%, rgba(204, 0, 46, 0.06), transparent 45%);
+}
+/* Terminal title bars use bg-black/40 → soften on light so they read as a
+   light chrome bar with dark text; prompt symbol colors stay (they use tokens). */
+.light .bg-black\/40 {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+.light .bg-black\/30 {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+/* SIEM/scoreboard rows that hardcode #0a000f / #0e0018 via inline styles stay
+   dark by design (console aesthetic) — left as-is for contrast. */
 
 /* Respect reduced-motion: kill decorative animation globally. */
 @media (prefers-reduced-motion: reduce) {

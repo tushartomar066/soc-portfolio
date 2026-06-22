@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import { personal } from "@/data/personal";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 // Fonts loaded via next/font and exposed as CSS variables to Tailwind.
 const inter = Inter({
@@ -36,6 +37,10 @@ const KonamiEgg = dynamic(
 );
 const ScrollProgress = dynamic(
   () => import("@/components/ScrollProgress").then((m) => m.ScrollProgress),
+  { ssr: false }
+);
+const CustomCursor = dynamic(
+  () => import("@/components/CustomCursor").then((m) => m.CustomCursor),
   { ssr: false }
 );
 
@@ -93,31 +98,35 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${inter.variable} ${jetbrains.variable} ${spaceGrotesk.variable}`}
     >
       <body>
-        <BootSequence />
-        <ScrollProgress />
-        <KonamiEgg />
+        <ThemeProvider>
+          <BootSequence />
+          <ScrollProgress />
+          <CustomCursor />
+          <KonamiEgg />
 
-        <SmoothScroll>{children}</SmoothScroll>
+          <SmoothScroll>{children}</SmoothScroll>
 
-        {/* global grain/noise texture */}
-        <div className="noise-overlay" aria-hidden="true" />
+          {/* global grain/noise texture */}
+          <div className="noise-overlay" aria-hidden="true" />
 
-        {/* Global toast portal for the contact form */}
-        <Toaster
-          position="bottom-right"
-          toastOptions={{
-            style: {
-              background: "#0e0018",
-              color: "#e8e8f0",
-              border: "1px solid rgba(157,0,255,0.4)",
-              fontFamily: "var(--font-jetbrains)",
-              fontSize: "0.85rem",
-            },
-          }}
-        />
+          {/* Global toast portal for the contact form */}
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                background: "#0e0018",
+                color: "#e8e8f0",
+                border: "1px solid rgba(157,0,255,0.4)",
+                fontFamily: "var(--font-jetbrains)",
+                fontSize: "0.85rem",
+              },
+            }}
+          />
+        </ThemeProvider>
       </body>
     </html>
   );

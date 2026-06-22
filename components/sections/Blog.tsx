@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Calendar, ArrowRight, FileText } from "lucide-react";
+import { Calendar, ArrowRight, FileText, Clock } from "lucide-react";
 import { SectionHeading } from "@/components/SectionHeading";
 import type { PostMeta } from "@/lib/mdx";
 
@@ -58,8 +58,8 @@ export function Blog({ posts }: { posts: PostMeta[] }) {
                   <span className="flex items-center gap-1">
                     <Calendar className="h-3 w-3" /> {post.date}
                   </span>
-                  <span className="flex items-center gap-1 text-accent-blue">
-                    Read <ArrowRight className="h-3 w-3" />
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" /> {post.readingTime}
                   </span>
                 </div>
               </Link>

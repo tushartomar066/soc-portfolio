@@ -19,34 +19,36 @@ const config: Config = {
     extend: {
       colors: {
         // ── Blood & Void tokens ──
+        // Defined as CSS-variable RGB channels so they can be themed (.light
+        // override in globals.css) AND still support /opacity modifiers.
         background: {
-          primary: "#080010", // ultra deep purple-black (page)
-          secondary: "#0e0018", // card / terminal background
+          primary: "rgb(var(--bg-primary) / <alpha-value>)",
+          secondary: "rgb(var(--bg-secondary) / <alpha-value>)",
         },
         accent: {
-          purple: "#9d00ff", // primary — electric violet
-          red: "#ff003c", // secondary — cyber red / danger
-          blue: "#00f5ff", // tertiary — ice blue
-          green: "#39ff14", // success / defender states only
+          purple: "rgb(var(--accent-purple) / <alpha-value>)",
+          red: "rgb(var(--accent-red) / <alpha-value>)",
+          blue: "rgb(var(--accent-blue) / <alpha-value>)",
+          green: "rgb(var(--accent-green) / <alpha-value>)",
         },
         text: {
-          primary: "#e8e8f0", // cool white
-          secondary: "#8888aa", // muted purple-grey
+          primary: "rgb(var(--text-primary) / <alpha-value>)",
+          secondary: "rgb(var(--text-secondary) / <alpha-value>)",
         },
-        glow: "rgba(157, 0, 255, 0.25)", // border.glow
+        glow: "rgba(157, 0, 255, 0.25)", // border.glow (static)
 
-        // ── Legacy aliases → remapped to the new palette ──
-        base: "#080010",
-        card: "#0e0018",
+        // ── Legacy aliases → mapped onto the same variables ──
+        base: "rgb(var(--bg-primary) / <alpha-value>)",
+        card: "rgb(var(--bg-secondary) / <alpha-value>)",
         "card-hover": "#16012a",
         border: "rgba(157, 0, 255, 0.25)",
         neon: {
-          green: "#39ff14",
-          blue: "#00f5ff",
-          purple: "#9d00ff",
-          red: "#ff003c",
+          green: "rgb(var(--accent-green) / <alpha-value>)",
+          blue: "rgb(var(--accent-blue) / <alpha-value>)",
+          purple: "rgb(var(--accent-purple) / <alpha-value>)",
+          red: "rgb(var(--accent-red) / <alpha-value>)",
         },
-        muted: "#8888aa",
+        muted: "rgb(var(--text-secondary) / <alpha-value>)",
       },
       fontFamily: {
         // bound to next/font CSS variables in app/layout.tsx

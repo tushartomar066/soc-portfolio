@@ -44,8 +44,7 @@ export const navLinks = [
   { label: "Certs", href: "#certifications" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
+  { label: "CTF", href: "#ctf" },
   { label: "Blog", href: "#blog" },
   { label: "Contact", href: "#contact" },
-  // Temporary: separate route (not a #section anchor). Remove with /test-data.
-  { label: "Test Data", href: "/test-data" },
 ] as const;

@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { KaliTerminal } from "@/components/KaliTerminal";
 import { NeofetchCard } from "@/components/NeofetchCard";
 import { StatCounter } from "@/components/StatCounter";
+import { CurrentlyLearning } from "@/components/CurrentlyLearning";
 import { personal, about } from "@/data/personal";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
@@ -89,6 +90,11 @@ export function About() {
         <StatCounter value={10} suffix="+" label="Tools Explored" />
         <StatCounter value={12} suffix=" mo" label="Learning at FICO" />
         <StatCounter value={100} suffix="%" label="Blue Team Focus" />
+      </div>
+
+      {/* Live "currently learning" status */}
+      <div className="mx-auto mt-6 max-w-2xl">
+        <CurrentlyLearning />
       </div>
     </section>
   );

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Download } from "lucide-react";
 import { Typewriter } from "@/components/Typewriter";
 import { MagneticButton } from "@/components/MagneticButton";
+import { ThreatFeedWidget } from "@/components/ThreatFeedWidget";
 import { personal } from "@/data/personal";
 
 // Three.js must run client-side only — disable SSR to avoid `window` errors.
@@ -95,10 +96,16 @@ export function Hero() {
           <MagneticButton
             href={personal.cvPath}
             download="Tushar-Singh-Tomar-Resume.pdf"
+            trackCvDownload
           >
             Download CV
             <Download className="h-4 w-4" />
           </MagneticButton>
+        </motion.div>
+
+        {/* Live SIEM-style threat feed */}
+        <motion.div variants={item} className="flex justify-center">
+          <ThreatFeedWidget />
         </motion.div>
       </motion.div>
 
