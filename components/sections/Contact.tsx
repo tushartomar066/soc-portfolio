@@ -3,14 +3,21 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-// TODO: Add EmailJS keys to enable real email sending
-// import emailjs from "@emailjs/browser";
+import emailjs from "@emailjs/browser";
 import { Loader2 } from "lucide-react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { SocialRow } from "@/components/SocialRow";
 import { InteractiveTerminal } from "@/components/sections/InteractiveTerminal";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as const;
+
+// EmailJS config — all public/browser-safe values from .env.local.
+// (Never put the EmailJS *private* key here; this code runs in the browser.)
+const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+const EMAILJS_READY =
+  !!EMAILJS_SERVICE_ID && !!EMAILJS_TEMPLATE_ID && !!EMAILJS_PUBLIC_KEY;
 
 interface FormState {
   name: string;
@@ -46,24 +53,36 @@ export function Contact() {
 
     setSending(true);
 
-    // TODO: Add EmailJS keys to enable real email sending.
-    // Real sending is currently disabled — we just validate, show a success
-    // toast, and reset the form. To enable, restore the emailjs.send() call:
-    //
-    //   await emailjs.send(serviceId, templateId, {
-    //     from_name: form.name,
-    //     reply_to: form.email,
-    //     message: form.message,
-    //   }, { publicKey });
-    //
-    // with the keys from .env.local (NEXT_PUBLIC_EMAILJS_*).
+    // If EmailJS keys aren't configured yet, fail loudly in dev but don't
+    // pretend to the visitor that the message was delivered.
+    if (!EMAILJS_READY) {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      toast.error(
+        "Email sending isn't configured yet. Please reach out via the links below."
+      );
+      setSending(false);
+      return;
+    }
 
-    // Simulate a brief send so the loading state is visible.
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    toast.success("Message received! I'll get back to you soon.");
-    setForm(EMPTY);
-    setSending(false);
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID!,
+        EMAILJS_TEMPLATE_ID!,
+        {
+          from_name: form.name,
+          reply_to: form.email,
+          message: form.message,
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY! }
+      );
+      toast.success("Message received! I'll get back to you soon.");
+      setForm(EMPTY);
+    } catch (err) {
+      console.error("EmailJS send failed:", err);
+      toast.error("Something went wrong sending your message. Please try again.");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
