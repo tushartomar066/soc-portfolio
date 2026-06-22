@@ -25,7 +25,7 @@ const INFO: [string, string][] = [
   ["Host", "FICO Security Operations"],
   ["Kernel", "BlueTeam 5.15.0-defender"],
   ["Uptime", "Since June 2025"],
-  ["Role", "SOC Analyst Intern"],
+  ["Role", "SOC Analyst (Associate)"],
   ["Packages", "Splunk, Defender, Wiz (learning)"],
   ["Shell", "alert-triage"],
   ["Resolution", "1920x1080 (Threat View)"],

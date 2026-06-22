@@ -12,20 +12,31 @@ export interface ExperienceItem {
 
 export const experience: ExperienceItem[] = [
   {
-    title: "SOC Analyst Intern",
+    title: "SOC Analyst (Associate)",
     company: "FICO",
-    dates: "June 2025 – Present",
+    dates: "June 2026 – Present",
     location: "India",
     points: [
-      "Monitoring and triaging day-to-day security alerts across Microsoft Defender and Cortex XDR, learning how to investigate endpoint threats as part of the blue team.",
-      "Getting hands-on with Splunk SIEM — running searches and learning to write and tune SPL queries to cut down on false positives.",
-      "Gaining exposure to SOAR automation in Torq, helping run and follow response playbooks alongside the team.",
-      "Learning cloud security posture management with Wiz — reviewing misconfigurations and identity risks across cloud environments.",
-      "Assisting with phishing and email-threat investigations in Abnormal Security, spotting BEC and social-engineering attempts.",
-      "Picking up threat intelligence basics with Rapid7 InsightIDR, SOC Radar, and Cyberint to add context to investigations.",
-      "Building familiarity with a wide SOC tool stack — Netography, CyberArk, Imperva WAF, and Zscaler DLP — a little at a time.",
+      "Working actively on the blue team — monitoring and triaging day-to-day security alerts across Microsoft Defender and Cortex XDR and investigating endpoint threats.",
+      "Running detections and investigations in Splunk SIEM, writing and tuning SPL queries to cut down on false positives.",
+      "Following and helping run incident-response playbooks in Torq (SOAR) to keep response consistent.",
+      "Reviewing cloud security posture in Wiz — checking misconfigurations and identity risks across cloud environments.",
+      "Investigating phishing and email threats in Abnormal Security, spotting BEC and social-engineering attempts.",
+      "Building familiarity across a wide SOC tool stack — Rapid7 InsightIDR, SOC Radar, Cyberint, Netography, CyberArk, Imperva WAF, and Zscaler DLP — a little at a time.",
       "Contributing to Purple Teaming exercises and learning how attacks are simulated and security controls validated.",
-      "Working with the team to onboard new log sources and understand how detection coverage is built and maintained.",
+    ],
+  },
+  {
+    title: "SOC Analyst Intern",
+    company: "FICO",
+    dates: "June 2025 – June 2026",
+    location: "India",
+    points: [
+      "Started on the blue team as an intern, learning to monitor and triage security alerts and investigate endpoint threats with Microsoft Defender and Cortex XDR.",
+      "Got hands-on with Splunk SIEM — running searches and learning to write and tune SPL detection queries.",
+      "Gained exposure to SOAR automation in Torq, cloud posture management in Wiz, and email-threat investigation in Abnormal Security.",
+      "Picked up threat-intelligence basics and built familiarity with the broader SOC tool stack while finding my footing in the field.",
+      "Worked with the team to understand how log sources are onboarded and how detection coverage is built and maintained.",
     ],
   },
 ];
