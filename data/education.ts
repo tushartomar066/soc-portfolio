@@ -14,6 +14,6 @@ export const education: EducationItem[] = [
     degree: "Bachelor of Engineering — Computer Science & Engineering (CSE)",
     university: "Chitkara University",
     location: "Rajpura, Punjab",
-    dates: "August 2022 – July 2026",
+    dates: "August 2022 – June 2026 (Completed)",
   },
 ];

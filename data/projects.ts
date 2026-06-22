@@ -13,27 +13,27 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: "Enterprise SIEM Detection Engineering",
+    title: "Learning SIEM Detection with Splunk",
     description:
-      "Engineered and refined Splunk SPL detection queries to reduce false positives and improve alert fidelity across enterprise log sources — tuning rules against real telemetry and mapping coverage to MITRE ATT&CK.",
-    tools: ["Splunk", "SPL", "MITRE ATT&CK", "Detection Engineering"],
+      "Getting hands-on with Splunk — running searches, learning to write and tune SPL queries to reduce false positives, and starting to map detections to the MITRE ATT&CK framework.",
+    tools: ["Splunk", "SPL", "MITRE ATT&CK", "Detection"],
   },
   {
-    title: "Cloud Security Posture Monitoring",
+    title: "Exploring Cloud Security Posture (Wiz)",
     description:
-      "Continuous cloud security posture management across enterprise environments using Wiz — surfacing misconfigurations, identity risks, and toxic combinations, then driving remediation with engineering teams.",
+      "Learning cloud security posture management with Wiz — reviewing misconfigurations and identity risks in cloud environments and understanding how findings get prioritized and remediated.",
     tools: ["Wiz", "CSPM", "Cloud Security", "IAM"],
   },
   {
-    title: "Phishing & BEC Investigation Dashboard",
+    title: "Phishing & BEC Investigations",
     description:
-      "Investigation workflow for phishing and email threats using Abnormal Security — identifying business email compromise (BEC) and social engineering campaigns, with enrichment from external threat intelligence.",
+      "Assisting with phishing and email-threat investigations using Abnormal Security — learning to spot business email compromise (BEC) and social-engineering attempts and add threat-intel context.",
     tools: ["Abnormal Security", "BEC Detection", "Threat Intel", "Phishing"],
   },
   {
-    title: "SOAR Playbook Automation with Torq",
+    title: "Getting Started with SOAR (Torq)",
     description:
-      "Automated SOC workflows and incident response playbooks in Torq — standardizing enrichment and response actions to improve consistency and drive down mean time to respond (MTTR).",
+      "Following and helping run incident-response playbooks in Torq — learning how SOC workflows get automated to make response faster and more consistent.",
     tools: ["Torq", "SOAR", "Automation", "Incident Response"],
   },
 ];

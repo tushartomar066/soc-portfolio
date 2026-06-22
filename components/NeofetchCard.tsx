@@ -21,18 +21,19 @@ c;.        .;ccccccccccccccc;.      .'
 `;
 
 const INFO: [string, string][] = [
-  ["OS", "SOC Operations 6.0 LTS"],
+  ["OS", "SOC Operations (Junior Build)"],
   ["Host", "FICO Security Operations"],
   ["Kernel", "BlueTeam 5.15.0-defender"],
-  ["Uptime", "3+ years in security"],
-  ["Packages", "Splunk, Wiz, CrowdStrike, Torq"],
-  ["Shell", "incident-response"],
+  ["Uptime", "Since June 2025"],
+  ["Role", "SOC Analyst Intern"],
+  ["Packages", "Splunk, Defender, Wiz (learning)"],
+  ["Shell", "alert-triage"],
   ["Resolution", "1920x1080 (Threat View)"],
   ["DE", "MITRE ATT&CK Framework"],
-  ["WM", "Zero Trust Architecture"],
+  ["WM", "Blue Team Operations"],
   ["Terminal", "SOC-Dashboard"],
-  ["CPU", "Threat Intelligence Engine"],
-  ["Memory", "99% dedicated to defense"],
+  ["CPU", "Curiosity + Caffeine"],
+  ["Memory", "100% focused on learning"],
 ];
 
 /**

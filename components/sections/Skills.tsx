@@ -21,7 +21,7 @@ export function Skills() {
       <SectionHeading
         label="// 02. skills"
         title="Skills & Tools"
-        subtitle="The detection, response, and automation stack I work with daily."
+        subtitle="The detection, response, and automation tools I'm learning to work with in the SOC."
       />
 
       {/* Responsive grid of Kali-terminal cards (3 / 2 / 1 columns). */}

@@ -56,7 +56,7 @@ export function Experience() {
       <SectionHeading
         label="// 03. experience"
         title="Experience"
-        subtitle="A timeline of defending environments across the SOC."
+        subtitle="Where I'm currently learning the ropes of the SOC."
       />
 
       <div ref={root} className="relative pl-8 md:pl-0">

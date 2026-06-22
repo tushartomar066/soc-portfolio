@@ -86,8 +86,8 @@ export function About() {
 
       {/* Stat counters */}
       <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <StatCounter value={10} suffix="+" label="Tools Mastered" />
-        <StatCounter value={3} suffix="+" label="Months at FICO" />
+        <StatCounter value={10} suffix="+" label="Tools Explored" />
+        <StatCounter value={12} suffix=" mo" label="Learning at FICO" />
         <StatCounter value={100} suffix="%" label="Blue Team Focus" />
       </div>
     </section>

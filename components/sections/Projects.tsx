@@ -15,7 +15,7 @@ export function Projects() {
       <SectionHeading
         label="// 04. projects"
         title="Projects & Labs"
-        subtitle="Hands-on security engineering, detection labs, and write-ups."
+        subtitle="Hands-on areas I've been learning and practicing in the SOC."
       />
 
       <div className="grid gap-6 md:grid-cols-2">

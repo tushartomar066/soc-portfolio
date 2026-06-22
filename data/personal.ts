@@ -11,19 +11,19 @@ export const personal = {
   // rotated by the typewriter in the hero
   titles: [
     "SOC Analyst",
-    "Threat Hunter",
-    "Incident Responder",
-    "Cloud Security Specialist",
-    "Blue Teamer",
+    "Blue Team Defender",
+    "Threat Detection",
+    "Incident Response",
+    "Always Learning",
   ],
   tagline:
-    "Securing enterprise cloud environments through threat detection, automation, and rapid incident response.",
+    "Just getting started in the SOC — learning threat detection, alert triage, and blue-team operations hands-on, one investigation at a time.",
   // full summary used as the About bio
   summary:
-    "SOC Analyst with proven expertise in securing enterprise cloud environments, threat detection, and incident response. Demonstrated ability to strengthen cloud security posture management, streamline response workflows through automation, and drive down mean time to respond — enabling faster, more effective investigations across complex cloud-scale infrastructures.",
+    "Entry-level SOC Analyst currently interning at FICO, where I work day-to-day with the blue team monitoring and triaging security alerts. I'm building real-world experience in security operations and getting hands-on exposure to a wide range of SOC tools — SIEM, EDR, cloud security, email security, and threat intelligence — as I find my footing in the field.",
   // SEO description
   description:
-    "Tushar Singh Tomar — SOC Analyst Intern at FICO specializing in cloud security, threat detection, SIEM engineering, and incident response. Portfolio of projects, certifications, and write-ups.",
+    "Tushar Singh Tomar — entry-level SOC Analyst Intern at FICO, working in the blue team on threat detection, alert triage, and incident response. Portfolio of hands-on learning, projects, and write-ups.",
   location: "Meerut, Uttar Pradesh 250001, India",
   email: "tushartomar066@gmail.com",
   phone: "+91 6397206501",
@@ -40,8 +40,8 @@ export const about = {
   // bio paragraphs shown in the About section
   bio: [
     personal.summary,
-    "Currently pursuing a B.E. in Computer Science & Engineering at Chitkara University (2022–2026) while working as a SOC Analyst Intern at FICO — applying classroom fundamentals to real-world detection engineering, cloud security posture management, and incident response on enterprise-scale infrastructure.",
+    "I completed my B.E. in Computer Science & Engineering at Chitkara University in June 2026, and have been working as a SOC Analyst Intern at FICO since June 2025 — taking what I learned in the classroom and applying it on a real blue team: watching alerts, triaging incidents, and slowly getting comfortable across the SOC tool stack.",
   ],
   mission:
-    "My mission is to make defenders faster than attackers — through resilient detection engineering, cloud-native security monitoring, and automation that turns hours of triage into minutes.",
+    "My goal right now is simple: keep learning, sharpen my detection and investigation skills every day, and grow into a strong defender on the blue team.",
 } as const;
