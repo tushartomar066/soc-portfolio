@@ -17,6 +17,9 @@ export function Certifications() {
         subtitle="Where I'm headed — certifications I'm working toward and planning."
       />
 
+      <p className="mb-4 text-center font-mono text-xs text-text-secondary sm:hidden">
+        // tap a card to flip
+      </p>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {certifications.map((cert, i) => (
           <motion.div
@@ -44,6 +47,10 @@ function CertCard({ cert }: { cert: Certification }) {
       onMouseEnter={() => setFlipped(true)}
       onMouseLeave={() => setFlipped(false)}
       onClick={() => setFlipped((f) => !f)}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === "Enter" && setFlipped((f) => !f)}
+      aria-label={`${cert.name} — tap to flip`}
     >
       <motion.div
         animate={{ rotateY: flipped ? 180 : 0 }}

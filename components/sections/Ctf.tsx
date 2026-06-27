@@ -120,11 +120,11 @@ export function Ctf() {
           <table className="w-full border-collapse font-mono text-xs sm:text-sm">
             <thead>
               <tr className="text-left text-text-secondary">
-                <th className="px-4 py-2 font-medium">#</th>
-                <th className="px-4 py-2 font-medium">Challenge</th>
-                <th className="px-4 py-2 font-medium">Platform</th>
-                <th className="px-4 py-2 font-medium">Difficulty</th>
-                <th className="px-4 py-2 font-medium">Status</th>
+                <th className="px-2 py-2 font-medium sm:px-4">#</th>
+                <th className="px-2 py-2 font-medium sm:px-4">Challenge</th>
+                <th className="hidden px-2 py-2 font-medium sm:table-cell sm:px-4">Platform</th>
+                <th className="px-2 py-2 font-medium sm:px-4">Difficulty</th>
+                <th className="px-2 py-2 font-medium sm:px-4">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -133,24 +133,24 @@ export function Ctf() {
                   key={r.rank}
                   style={{ background: i % 2 === 0 ? "#0e0018" : "#0a000f" }}
                 >
-                  <td className="px-4 py-2.5">
+                  <td className="px-2 py-2.5 sm:px-4">
                     <span className="inline-flex h-6 w-6 items-center justify-center rounded border border-accent-purple/50 text-accent-purple">
                       {r.rank}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5 text-text-primary">
+                  <td className="px-2 py-2.5 text-text-primary sm:px-4">
                     <Flag className="mr-1.5 inline h-3 w-3 text-accent-blue" />
                     {r.challenge}
                   </td>
-                  <td className="px-4 py-2.5 text-text-secondary">
+                  <td className="hidden px-2 py-2.5 text-text-secondary sm:table-cell sm:px-4">
                     {r.platform}
                   </td>
-                  <td className="px-4 py-2.5">
+                  <td className="px-2 py-2.5 sm:px-4">
                     <span style={{ color: DIFF_COLOR[r.difficulty] }}>
                       {r.difficulty}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5">
+                  <td className="px-2 py-2.5 sm:px-4">
                     <span
                       className={
                         r.status === "Solved"

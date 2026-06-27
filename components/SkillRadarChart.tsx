@@ -49,17 +49,32 @@ export function SkillRadarChart() {
       <p className="mb-2 text-center font-mono text-xs text-text-secondary">
         // skill coverage map
       </p>
-      <div className="h-[360px] w-full sm:h-[420px]">
+      <div className="h-[320px] w-full sm:h-[420px]">
         {mounted && (
-        <ResponsiveContainer width="100%" height="100%" minHeight={360}>
-          <RadarChart data={DATA} outerRadius="72%">
+        <ResponsiveContainer width="100%" height="100%" minHeight={320}>
+          <RadarChart data={DATA} outerRadius="58%">
             <PolarGrid stroke="rgba(157,0,255,0.2)" />
             <PolarAngleAxis
               dataKey="skill"
-              tick={{
-                fill: "#e8e8f0",
-                fontSize: 10,
-                fontFamily: "var(--font-jetbrains), monospace",
+              tick={({ x, y, payload }) => {
+                const words = (payload.value as string).split(" ");
+                return (
+                  <text
+                    x={x}
+                    y={y}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fill="#e8e8f0"
+                    fontSize={9}
+                    fontFamily="var(--font-jetbrains), monospace"
+                  >
+                    {words.map((word: string, i: number) => (
+                      <tspan key={i} x={x} dy={i === 0 ? 0 : 11}>
+                        {word}
+                      </tspan>
+                    ))}
+                  </text>
+                );
               }}
             />
             <PolarRadiusAxis

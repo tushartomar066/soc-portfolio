@@ -108,7 +108,7 @@ export function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5, ease: EASE }}
-          className="space-y-5 rounded-2xl border border-glow bg-background-secondary p-8"
+          className="space-y-5 rounded-2xl border border-glow bg-background-secondary p-5 sm:p-8"
         >
           <Field label="Name" error={errors.name}>
             <input

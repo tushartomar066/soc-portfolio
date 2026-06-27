@@ -21,7 +21,7 @@ export function Blog({ posts }: { posts: PostMeta[] }) {
           <code className="text-accent-blue">/content/blog</code>.
         </p>
       ) : (
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post, i) => (
             <motion.article
               key={post.slug}
